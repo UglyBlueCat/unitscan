@@ -468,6 +468,8 @@ function unitscanLC:FriendCheck(name)
 			is_resting = IsResting()
 			nearby_targets = {}
 
+			unitscan_zone_targets()
+
 			if instance_type == "raid" or instance_type == "pvp" then return end
 			if loc == nil then return end
 
@@ -2654,6 +2656,9 @@ do
 			for name in pairs(unitscan_targets) do
 				unitscan.target(name)
 			end
+			for name in pairs(unitscan_zonetargets) do
+				unitscan.target(name)
+			end
 			for _, name in pairs(nearby_targets) do
 				unitscan.target(name)
 			end
@@ -2852,6 +2857,22 @@ SlashCmdList["UNITSCAN"] = function(parameter)
 				end
 			end
 		end
+
+		unitscan_zone_targets()
+
+		if unitscan_zonetargets then
+			if next(unitscan_zonetargets) == nil then
+				unitscan.print("unitscan_zonetargets is currently empty.")
+			else
+				unitscan.print("unitscan_zonetargets contains:")
+				for k, v in pairs(unitscan_zonetargets) do
+					unitscan.print(tostring(k))
+				end
+			end
+		else
+			unitscan.print("unitscan_zonetargets is undefined.")
+		end
+
 	else
 		unitscan.toggle_target(parameter)
 	end
